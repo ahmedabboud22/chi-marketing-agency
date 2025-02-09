@@ -24,6 +24,12 @@
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
+     <url>
+        <loc>https://www.chiagency-ae.com/gallery.html</loc>
+        <lastmod>2025-02-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
     <url>
         <loc>https://www.chiagency-ae.com/concept-creation.html</loc>
         <lastmod>2025-02-08</lastmod>
