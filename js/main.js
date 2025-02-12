@@ -1174,18 +1174,17 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 //contact form code:
-(function () {
-  emailjs.init("YOUR_EMAILJS_PUBLIC_KEY");
-})();
 
 document
   .getElementById("contactForm")
   .addEventListener("submit", function (event) {
-    event.preventDefault();
+    event.preventDefault(); // منع إعادة تحميل الصفحة
 
     grecaptcha.ready(function () {
       grecaptcha
-        .execute("YOUR_RECAPTCHA_SITE_KEY", { action: "submit" })
+        .execute("6LcPudEqAAAAAGFBYB_K_TQBphOEReVedDfa4BQy", {
+          action: "submit",
+        })
         .then(function (token) {
           sendEmail(token);
         });
@@ -1193,32 +1192,34 @@ document
   });
 
 function sendEmail(recaptchaToken) {
-  const serviceID = "YOUR_SERVICE_ID";
-  const templateID = "YOUR_TEMPLATE_ID";
+  const serviceID = "service_bvc2qxp";
+  const templateID = "template_2tgwxuo";
+  const publicKey = "rAC1ETK3ichm2-wyM";
 
-  const templateParams = {
-    name: document.getElementById("name").value,
-    email: document.getElementById("email").value,
+  const formData = {
+    from_name: document.getElementById("name").value,
+    email: document.getElementById("user_email").value,
     message: document.getElementById("message").value,
     "g-recaptcha-response": recaptchaToken,
   };
 
   emailjs
-    .send(serviceID, templateID, templateParams)
+    .send(serviceID, templateID, formData, publicKey)
     .then((response) => {
-      console.log("Email sent successfully", response);
-      showModal();
+      console.log("Email Sent Successfully!", response);
+      openModal("successModal");
       document.getElementById("contactForm").reset();
     })
     .catch((error) => {
-      console.error("Error sending email", error);
+      console.error("Failed to Send Email:", error);
+      openModal("failureModal");
     });
 }
 
-function showModal() {
-  document.querySelector(".ahmed-modal").classList.add("show");
+function openModal(modalID) {
+  document.getElementById(modalID).style.display = "block";
 }
 
-function closeModal() {
-  document.querySelector(".ahmed-modal").classList.remove("show");
+function closeModal(modalID) {
+  document.getElementById(modalID).style.display = "none";
 }
