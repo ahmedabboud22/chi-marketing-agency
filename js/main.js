@@ -75,33 +75,33 @@ $(function () {
     "+=.3"
   );
 
-  timeline.fromTo(
-    ".mil-reveal-box",
-    0.1,
-    {
-      opacity: 0,
-    },
-    {
-      opacity: 1,
-      x: "-30",
-    }
-  );
+  // timeline.fromTo(
+  //   ".mil-reveal-box",
+  //   0.1,
+  //   {
+  //     opacity: 0,
+  //   },
+  //   {
+  //     opacity: 1,
+  //     x: "-30",
+  //   }
+  // );
 
-  timeline.to(
-    ".mil-reveal-box",
-    0.45,
-    {
-      width: "100%",
-      x: 0,
-    },
-    "+=.1"
-  );
-  timeline.to(".mil-reveal-box", {
-    right: "0",
-  });
-  timeline.to(".mil-reveal-box", 0.3, {
-    width: "0%",
-  });
+  // timeline.to(
+  //   ".mil-reveal-box",
+  //   0.45,
+  //   {
+  //     width: "100%",
+  //     x: 0,
+  //   },
+  //   "+=.1"
+  // );
+  // timeline.to(".mil-reveal-box", {
+  //   right: "0",
+  // });
+  // timeline.to(".mil-reveal-box", 0.3, {
+  //   width: "0%",
+  // });
   timeline.fromTo(
     ".mil-animation-2 .mil-h3",
     {
@@ -206,7 +206,7 @@ $(function () {
     let menu = element.querySelector(".mil-accordion-menu");
     let box = element.querySelector(".mil-accordion-content");
     let symbol = element.querySelector(".mil-symbol");
-    let Element = element.querySelector(".mil-minus");
+    let minusElement = element.querySelector(".mil-minus");
     let plusElement = element.querySelector(".mil-plus");
 
     gsap.set(box, {
@@ -1175,51 +1175,131 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //contact form code:
 
-document
-  .getElementById("contactForm")
-  .addEventListener("submit", function (event) {
-    event.preventDefault(); // منع إعادة تحميل الصفحة
+// document
+//   .getElementById("contactForm")
+//   .addEventListener("submit", function (event) {
+//     event.preventDefault(); // منع إعادة تحميل الصفحة
 
-    grecaptcha.ready(function () {
-      grecaptcha
-        .execute("6LcPudEqAAAAAGFBYB_K_TQBphOEReVedDfa4BQy", {
-          action: "submit",
-        })
-        .then(function (token) {
-          sendEmail(token);
+//     grecaptcha.ready(function () {
+//       grecaptcha
+//         .execute("6LcPudEqAAAAAGFBYB_K_TQBphOEReVedDfa4BQy", {
+//           action: "submit",
+//         })
+//         .then(function (token) {
+//           sendEmail(token);
+//         });
+//     });
+//   });
+
+// function sendEmail(recaptchaToken) {
+//   const serviceID = "service_bvc2qxp";
+//   const templateID = "template_2tgwxuo";
+//   const publicKey = "rAC1ETK3ichm2-wyM";
+
+//   const formData = {
+//     from_name: document.getElementById("name").value,
+//     email: document.getElementById("user_email").value,
+//     message: document.getElementById("message").value,
+//     subject: document.getElementById("subject").value,
+//     phone: document.getElementById("phone").value,
+//     "g-recaptcha-response": recaptchaToken,
+//   };
+
+//   emailjs
+//     .send(serviceID, templateID, formData, publicKey)
+//     .then((response) => {
+//       console.log("Email Sent Successfully!", response);
+//       openModal("successModal");
+//       document.getElementById("contactForm").reset();
+//     })
+//     .catch((error) => {
+//       console.error("Failed to Send Email:", error);
+//       openModal("failureModal");
+//     });
+// }
+
+// function openModal(modalID) {
+//   document.getElementById(modalID).style.display = "block";
+// }
+
+// function closeModal(modalID) {
+//   document.getElementById(modalID).style.display = "none";
+// }
+
+if (window.location.href.includes("contact")) {
+  document.addEventListener("DOMContentLoaded", function () {
+    document
+      .getElementById("contactForm")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        console.log("نموذج الإرسال تم منعه، يتم تنفيذ reCAPTCHA...");
+
+        // تحقق من صحة الحقول قبل الإرسال
+        if (!validateForm()) {
+          alert("يرجى ملء جميع الحقول قبل الإرسال.");
+          return;
+        }
+
+        grecaptcha.ready(function () {
+          grecaptcha
+            .execute("6LcPudEqAAAAAGFBYB_K_TQBphOEReVedDfa4BQy", {
+              action: "submit",
+            })
+            .then(function (token) {
+              console.log("تم جلب reCAPTCHA بنجاح، يتم إرسال البريد...");
+              sendEmail(token);
+            })
+            .catch((error) => {
+              console.error("خطأ في reCAPTCHA:", error);
+            });
         });
-    });
+      });
   });
 
-function sendEmail(recaptchaToken) {
-  const serviceID = "service_bvc2qxp";
-  const templateID = "template_2tgwxuo";
-  const publicKey = "rAC1ETK3ichm2-wyM";
+  function sendEmail(recaptchaToken) {
+    const serviceID = "service_bvc2qxp";
+    const templateID = "template_2tgwxuo";
+    const publicKey = "rAC1ETK3ichm2-wyM";
 
-  const formData = {
-    from_name: document.getElementById("name").value,
-    email: document.getElementById("user_email").value,
-    message: document.getElementById("message").value,
-    "g-recaptcha-response": recaptchaToken,
-  };
+    const formData = {
+      from_name: document.getElementById("name").value,
+      email: document.getElementById("user_email").value,
+      subject: document.getElementById("subject").value,
+      phone: document.getElementById("phone").value,
+      message: document.getElementById("message").value,
 
-  emailjs
-    .send(serviceID, templateID, formData, publicKey)
-    .then((response) => {
-      console.log("Email Sent Successfully!", response);
-      openModal("successModal");
-      document.getElementById("contactForm").reset();
-    })
-    .catch((error) => {
-      console.error("Failed to Send Email:", error);
-      openModal("failureModal");
-    });
-}
+      "g-recaptcha-response": recaptchaToken,
+    };
 
-function openModal(modalID) {
-  document.getElementById(modalID).style.display = "block";
-}
+    emailjs
+      .send(serviceID, templateID, formData, publicKey)
+      .then((response) => {
+        console.log("✅ Succes", response);
+        openModal("successModal");
+        document.getElementById("contactForm").reset();
+      })
+      .catch((error) => {
+        console.error("❌ Failed", error);
+        openModal("failureModal");
+      });
+  }
 
-function closeModal(modalID) {
-  document.getElementById(modalID).style.display = "none";
+  function validateForm() {
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("user_email").value.trim();
+    const subject = document.getElementById("subject").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const message = document.getElementById("message").value.trim();
+
+    return name && email && subject && phone && message;
+  }
+
+  function openModal(modalID) {
+    document.getElementById(modalID).style.display = "block";
+  }
+
+  function closeModal(modalID) {
+    document.getElementById(modalID).style.display = "none";
+  }
 }
